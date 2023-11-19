@@ -7,6 +7,7 @@ namespace time_logger.Data
     {
         public TimeLoggerDbContext(DbContextOptions<TimeLoggerDbContext> options) : base(options)
         {
+
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Project> Projects { get; set; }
@@ -15,8 +16,7 @@ namespace time_logger.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure a composite key
-            modelBuilder.Entity<TimeLog>()
-                .HasKey(t => new { t.UserId, t.ProjectId, t.Date });
+            modelBuilder.Entity<TimeLog>().HasKey(t => t.TimeLogId);
 
             // Configure one-to-many relationship
             modelBuilder.Entity<User>()
@@ -28,6 +28,7 @@ namespace time_logger.Data
                 .HasMany(p => p.TimeLogs)
                 .WithOne(t => t.Project)
                 .HasForeignKey(t => t.ProjectId);
+
         }
     }
 }

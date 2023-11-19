@@ -12,7 +12,7 @@ using time_logger.Data;
 namespace timelogger.Migrations
 {
     [DbContext(typeof(TimeLoggerDbContext))]
-    [Migration("20231119113635_InitialCreate")]
+    [Migration("20231119134434_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -45,11 +45,11 @@ namespace timelogger.Migrations
 
             modelBuilder.Entity("time_logger.Models.TimeLog", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("TimeLogId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TimeLogId"));
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -57,12 +57,17 @@ namespace timelogger.Migrations
                     b.Property<float>("HoursWorked")
                         .HasColumnType("real");
 
-                    b.Property<int>("TimeLogId")
+                    b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId", "ProjectId", "Date");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TimeLogId");
 
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("TimeLogs");
                 });
@@ -82,13 +87,13 @@ namespace timelogger.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("UserId");
 

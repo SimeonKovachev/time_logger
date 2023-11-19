@@ -8,11 +8,11 @@ namespace time_logger.Models
         public int UserId { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(50)]
         public string FirstName { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(50)]
         public string LastName { get; set; }
 
         [Required]
