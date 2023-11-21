@@ -42,7 +42,7 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<TimeLoggerDbContext>();
         var dbInitializer = new DbInitializer(context);
-        dbInitializer.SeedDatabase();
+        await dbInitializer.SeedDatabaseAsync();
     }
     catch (Exception ex)
     {

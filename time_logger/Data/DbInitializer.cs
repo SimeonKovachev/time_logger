@@ -13,52 +13,50 @@ namespace time_logger.Data
             _context = context;
         }
 
-        public void SeedDatabase()
+        // Asynchronously seed the database
+        public async Task SeedDatabaseAsync()
         {
-            ClearTables();
-            GenerateUsers();
-            GenerateProjects();
-            GenerateTimeLogs();
+            await ClearTablesAsync();
+            await GenerateUsersAsync();
+            await GenerateProjectsAsync();
+            await GenerateTimeLogsAsync();
         }
-        // Implementation to clear tables
-        private void ClearTables()
+
+        // Asynchronously clear all tables
+        private async Task ClearTablesAsync()
         {
-            using (var transaction = _context.Database.BeginTransaction())
+            using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
                 {
- 
-                    _context.TimeLogs.RemoveRange(_context.TimeLogs); 
+                    // Remove all entries from tables
+                    _context.TimeLogs.RemoveRange(_context.TimeLogs);
                     _context.Projects.RemoveRange(_context.Projects);
                     _context.Users.RemoveRange(_context.Users);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
 
                     // Commit the transaction
-                    transaction.Commit();
+                    await transaction.CommitAsync();
                 }
                 catch (Exception ex)
                 {
-                    // Log the exception (consider using a logging framework)
+                    // Log the exception and rollback the transaction
                     Console.WriteLine(ex.Message);
-
-                    // Rollback the transaction on error
-                    transaction.Rollback();
-
-                    // Optionally, rethrow the exception to handle it further up the call stack
+                    await transaction.RollbackAsync();
                     throw;
                 }
             }
         }
 
-        // Implementation to generate users
-        private void GenerateUsers()
+        // Asynchronously generate users
+        private async Task GenerateUsersAsync()
         {
-            // Define sample data
+            // Sample data for user generation
             var firstNames = new[] { "John", "Gringo", "Mark", "Lisa", "Maria", "Sonya", "Philip", "Jose", "Lorenzo", "George", "Justin" };
             var lastNames = new[] { "Johnson", "Lamas", "Jackson", "Brown", "Mason", "Rodriguez", "Roberts", "Thomas", "Rose", "McDonalds" };
             var domains = new[] { "hotmail.com", "gmail.com", "live.com" };
 
-            //Generate 100 random users
+            // Generate 100 random users
             for (int i = 0; i < 100; i++)
             {
                 var firstName = firstNames[_random.Next(firstNames.Length)];
@@ -74,30 +72,29 @@ namespace time_logger.Data
                 };
 
                 // Add user to context
-                _context.Users.Add(newUser);
+                await _context.Users.AddAsync(newUser);
             }
 
             // Save changes to the database
             try
             {
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
-            //check for errors
             catch (Exception ex)
             {
                 // Log the exception
                 Console.WriteLine(ex.Message);
-
                 throw;
             }
         }
 
-        // Implementation to generate projects
-        private void GenerateProjects()
+        // Asynchronously generate projects
+        private async Task GenerateProjectsAsync()
         {
-            // Define project names
+            // Sample project names
             var projectNames = new[] { "My own", "Free Time", "Work" };
 
+            // Generate projects
             foreach (var projectName in projectNames)
             {
                 var newProject = new Project
@@ -105,28 +102,31 @@ namespace time_logger.Data
                     ProjectName = projectName
                 };
 
-                _context.Projects.Add(newProject);
+                // Add project to context
+                await _context.Projects.AddAsync(newProject);
             }
+
             // Save changes to the database
             try
             {
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
                 // Log the exception
                 Console.WriteLine(ex.Message);
-                // Handle the exception as needed
                 throw;
             }
         }
 
-        // Implementation to generate TimeLog entries
-        private void GenerateTimeLogs()
+        // Asynchronously generate TimeLog entries
+        private async Task GenerateTimeLogsAsync()
         {
-            var users = _context.Users.ToList();
-            var projects = _context.Projects.ToList();
+            // Retrieve all users and projects
+            var users = await _context.Users.ToListAsync();
+            var projects = await _context.Projects.ToListAsync();
 
+            // Generate TimeLog entries for each user
             foreach (var user in users)
             {
                 int numberOfEntries = _random.Next(1, 21); // Generate 1 to 20 entries
@@ -144,26 +144,30 @@ namespace time_logger.Data
                         HoursWorked = hoursWorked
                     };
 
-                    _context.TimeLogs.Add(timeLog);
+                    // Add TimeLog to context
+                    await _context.TimeLogs.AddAsync(timeLog);
                 }
             }
+
             // Save changes to the database
             try
             {
-                _context.SaveChanges();    
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
+                // Log the exception
                 Console.WriteLine(ex.Message);
                 throw;
             }
         }
+
+        // Generate a random date for TimeLog entries
         private DateTime RandomDay()
         {
             DateTime start = new DateTime(2020, 1, 1);
             int range = (DateTime.Today - start).Days;
             return start.AddDays(_random.Next(range));
         }
-
     }
 }
