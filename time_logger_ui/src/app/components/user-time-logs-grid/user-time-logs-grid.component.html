@@ -1,0 +1,37 @@
+<!-- src/app/user-time-logs-grid/user-time-logs-grid.component.html -->
+
+<div class="user-time-logs-grid">
+    <div class="filters">
+      <input type="date" fetchTimeLogs() placeholder="From Date">
+      <input type="date" fetchTimeLogs() placeholder="To Date">
+    </div>
+  
+    <table>
+      <thead>
+        <tr>
+          <th >User Name</th>
+          <th >Email</th>
+          <th >Project</th>
+          <th >Date</th>
+          <th >Hours Worked</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of timeLogs">
+          <td>{{ log.user.name }}</td>
+          <td>{{ log.user.email }}</td>
+          <td>{{ log.project.name }}</td>
+          <td>{{ log.date}}</td>
+          <td>{{ log.hoursWorked }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Pagination Controls -->
+    <div class="pagination">
+      <button (click)="changePage(-1)" [disabled]="currentPage === 1">Previous</button>
+      <span>Page {{ currentPage }}</span>
+      <button (click)="changePage(1)">Next</button>
+    </div>
+  </div>
+  

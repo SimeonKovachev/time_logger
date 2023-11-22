@@ -1,0 +1,17 @@
+.time-logs-grid table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .time-logs-grid th, .time-logs-grid td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .time-logs-grid th {
+    cursor: pointer;
+  }
+  
+  /* Add more styles as needed */
+  

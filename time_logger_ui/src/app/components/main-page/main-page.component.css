@@ -1,0 +1,9 @@
+/* main-page.component.css */
+.main-container {
+    display: flex;
+  }
+  
+  .left-column, .right-column {
+    flex: 1;
+  }
+  
