@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using time_logger.Data;
 using time_logger.Models;
+using time_logger.ViewModels;
 
 namespace time_logger.Controllers
 {
-    [Route("api/timelogs")]
-    [ApiController]
-    public class TimeLogsController : ControllerBase
+    public class TimeLogsController : Controller
     {
         private readonly TimeLoggerDbContext _context;
 
@@ -17,44 +20,167 @@ namespace time_logger.Controllers
             _context = context;
         }
 
-        // GET: api/timelogs
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<TimeLog>>> GetTimeLogs(
-            int pageNumber = 1, int pageSize = 10,
-            string sortBy = "Date", string sortOrder = "asc",
-            DateTime? startDate = null, DateTime? endDate = null)
+        // GET: TimeLogs
+        public async Task<IActionResult> Index()
         {
-            var query = _context.TimeLogs
+            var timeLogs = await _context.TimeLogs
                 .Include(t => t.User)
                 .Include(t => t.Project)
-                .AsQueryable();
+                .Select(t => new TimeLogViewModel
+                {
+                    UserName = t.User.FirstName + " " + t.User.LastName,
+                    Email = t.User.Email,
+                    ProjectName = t.Project.ProjectName,
+                    Date = t.Date,
+                    TimeWorked = t.HoursWorked
+                }).ToListAsync();
 
-            if (startDate.HasValue && endDate.HasValue)
+            return View(timeLogs);
+        }
+
+        // GET: TimeLogs/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _context.TimeLogs == null)
             {
-                query = query.Where(t => t.Date >= startDate.Value && t.Date <= endDate.Value);
+                return NotFound();
             }
 
-            switch (sortBy.ToLower())
+            var timeLog = await _context.TimeLogs
+                .Include(t => t.Project)
+                .Include(t => t.User)
+                .FirstOrDefaultAsync(m => m.TimeLogId == id);
+            if (timeLog == null)
             {
-                case "username":
-                    query = sortOrder.ToLower() == "asc" ? query.OrderBy(t => t.User.FirstName + " " + t.User.LastName) : query.OrderByDescending(t => t.User.FirstName + " " + t.User.LastName);
-                    break;
-                case "useremail":
-                    query = sortOrder.ToLower() == "asc" ? query.OrderBy(t => t.User.Email) : query.OrderByDescending(t => t.User.Email);
-                    break;
-                case "projectname":
-                    query = sortOrder.ToLower() == "asc" ? query.OrderBy(t => t.Project.ProjectName) : query.OrderByDescending(t => t.Project.ProjectName);
-                    break;
-                case "hoursworked":
-                    query = sortOrder.ToLower() == "asc" ? query.OrderBy(t => t.HoursWorked) : query.OrderByDescending(t => t.HoursWorked);
-                    break;
-                // Default sorting by date
-                default:
-                    query = sortOrder.ToLower() == "asc" ? query.OrderBy(t => t.Date) : query.OrderByDescending(t => t.Date);
-                    break;
+                return NotFound();
             }
 
-            return await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            return View(timeLog);
+        }
+
+        // GET: TimeLogs/Create
+        public IActionResult Create()
+        {
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "ProjectName");
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email");
+            return View();
+        }
+
+        // POST: TimeLogs/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("TimeLogId,UserId,ProjectId,Date,HoursWorked")] TimeLog timeLog)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(timeLog);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "ProjectName", timeLog.ProjectId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", timeLog.UserId);
+            return View(timeLog);
+        }
+
+        // GET: TimeLogs/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.TimeLogs == null)
+            {
+                return NotFound();
+            }
+
+            var timeLog = await _context.TimeLogs.FindAsync(id);
+            if (timeLog == null)
+            {
+                return NotFound();
+            }
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "ProjectName", timeLog.ProjectId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", timeLog.UserId);
+            return View(timeLog);
+        }
+
+        // POST: TimeLogs/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("TimeLogId,UserId,ProjectId,Date,HoursWorked")] TimeLog timeLog)
+        {
+            if (id != timeLog.TimeLogId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(timeLog);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!TimeLogExists(timeLog.TimeLogId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "ProjectName", timeLog.ProjectId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", timeLog.UserId);
+            return View(timeLog);
+        }
+
+        // GET: TimeLogs/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || _context.TimeLogs == null)
+            {
+                return NotFound();
+            }
+
+            var timeLog = await _context.TimeLogs
+                .Include(t => t.Project)
+                .Include(t => t.User)
+                .FirstOrDefaultAsync(m => m.TimeLogId == id);
+            if (timeLog == null)
+            {
+                return NotFound();
+            }
+
+            return View(timeLog);
+        }
+
+        // POST: TimeLogs/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (_context.TimeLogs == null)
+            {
+                return Problem("Entity set 'TimeLoggerDbContext.TimeLogs'  is null.");
+            }
+            var timeLog = await _context.TimeLogs.FindAsync(id);
+            if (timeLog != null)
+            {
+                _context.TimeLogs.Remove(timeLog);
+            }
+            
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool TimeLogExists(int id)
+        {
+          return (_context.TimeLogs?.Any(e => e.TimeLogId == id)).GetValueOrDefault();
         }
     }
 }

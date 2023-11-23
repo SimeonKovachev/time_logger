@@ -1,0 +1,51 @@
+﻿@model IEnumerable<time_logger.ViewModels.TimeLogViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Left Column Content (User's Time Logs) -->
+                <div class="card mb-4">
+                    <div class="card-header gradient-background soft-shadow"> 
+                        <h4>DataTable Example</h4>
+                    </div>
+                    <div class="table-responsive text-nowrap">
+                        <table class="table rounded-corners">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Project</th>
+                                    <th>Date</th>
+                                    <th>Time Worked</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var log in Model){
+                                    <tr>
+                                        <td>@log.UserName</td>
+                                        <td>@log.Email</td>
+                                        <td>@log.ProjectName</td>
+                                        <td>@log.Date.ToString("yyyy-MM-dd")</td>
+                                        <td>@log.TimeWorked</td>
+                                    </tr>
+                                }
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                </div>
+                <div class="col-md-6">
+                    <!-- Right Column Content (Bar Chart or Other Content) -->
+                </div>
+            </div>
+    </div>
+
+

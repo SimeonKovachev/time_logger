@@ -18,5 +18,125 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    font-family: 'Roboto', sans-serif !important;
+}
+
+
+/* Add this to your style.css file */
+
+/* General Table Styling */
+.table {
+    color: #333;
+    border-collapse: separate;
+    border-spacing: 0 0.5em;
+    font-family: 'Roboto', sans-serif !important;
+}
+
+    /* Header Styling */
+    .table thead th {
+        background-color: #EEE;
+        font-weight: bold;
+    }
+
+    /* Body Styling */
+    .table tbody tr {
+        background-color: #FFF;
+        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th, .table td {
+        padding: 0.3rem; /* Reduced from 0.75rem */
+        font-size: 0.9rem; /* Reduced from default */
+        white-space: normal;
+        word-wrap: break-word;
+    }
+
+@media (max-width: 768px) {
+    .table th, .table td {
+        font-size: 0.8rem;
+    }
+}
+
+.table-responsive {
+    overflow-x: auto;
+    min-height: 0.01%;
+    display: block;
+}
+
+@media screen and (max-width: 767px) {
+    .table-responsive {
+        width: 100%;
+        margin-bottom: 15px;
+        overflow-y: hidden;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        border: 1px solid #ddd;
+    }
+
+/* Card Styling */
+.card {
+    border: none;
+    border-radius: 0.5em;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #6f42c1;
+    color: black;
+    border-bottom: 0;
+    padding: 1em 1.25em;
+    font-size: 1.2em;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+}
+
+/* Responsive Container */
+.container-fluid {
+    padding: 2em;
+}
+
+/* Button Styling */
+.button {
+    background-color: #6f42c1;
+    color: white;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 0.25em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .button:hover {
+        background-color: #5a34a3;
+    }
+
+
+.gradient-background {
+    background: linear-gradient(135deg, #9575cd 0%, #7e57c2 100%);
+    color: white;
+}
+
+/* Soft drop shadows for a subtle depth effect */
+.soft-shadow {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Rounded corners for a modern feel */
+.rounded-corners {
+    border-radius: 8px;
+}
+
+/* Interactive elements like buttons with a hover effect */
+.interactive-element {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+    .interactive-element:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    }
+
+/* For text and icons, consider a subtle text-shadow for a glowing effect */
+.text-glow {
+    text-shadow: 0 0 5px rgba(150, 150, 250, 0.5);
 }
