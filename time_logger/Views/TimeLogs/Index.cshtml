@@ -1,51 +1,87 @@
 ﻿@model IEnumerable<time_logger.ViewModels.TimeLogViewModel>
+@using Syncfusion.EJ2
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<object> operators = new List<object>();
+    operators.Add(new { value = "range from", text = "Range From - To" });
 }
 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6">
-                <!-- Left Column Content (User's Time Logs) -->
-                <div class="card mb-4">
-                    <div class="card-header gradient-background soft-shadow"> 
-                        <h4>DataTable Example</h4>
-                    </div>
-                    <div class="table-responsive text-nowrap">
-                        <table class="table rounded-corners">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Project</th>
-                                    <th>Date</th>
-                                    <th>Time Worked</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var log in Model){
-                                    <tr>
-                                        <td>@log.UserName</td>
-                                        <td>@log.Email</td>
-                                        <td>@log.ProjectName</td>
-                                        <td>@log.Date.ToString("yyyy-MM-dd")</td>
-                                        <td>@log.TimeWorked</td>
-                                    </tr>
-                                }
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <!-- Left Column Content (User's Time Logs) -->
+             <div class="control-section" style="overflow-x:auto; margin-left: 4px;">
+                 <div class="col-md-12 d-flex justify-content-between mb-5">
+                    <h3 class="h3"> User Time Logs Table</h3>
+                    <button id="initDbButton" class="btn btn-primary">Reset Data</button>
+                 </div>
+                 
+                <ejs-grid id="Grid" dataSource="@Model" allowSorting="true" allowFiltering="true"  allowPaging="true" autoFit="true">
+                     <e-grid-pagesettings pageSize="10"></e-grid-pagesettings>
+                    <e-grid-filterSettings type="Menu" operators="@(new { dateOperator = operators })"></e-grid-filterSettings>
+                     <e-grid-columns>
+                        <e-grid-column field="UserName" headerText="Name" width="120" allowFiltering="false"></e-grid-column>
+                        <e-grid-column field="Email" headerText="Email" allowResizing="false" width="200" allowFiltering="false"></e-grid-column>
+                        <e-grid-column field="ProjectName" headerText=" Project" width="80" allowFiltering="false"></e-grid-column>
+                        <e-grid-column field="Date" headerText="Date" filter="@(new { ui= new { create = "onFilterCreate", write = "onFilterWrite" } })" format="yMd" width="100" type="Date"></e-grid-column>
+                        <e-grid-column field="TimeWorked" headerText="Time Worked" format="N2" width="115" allowFiltering="false"></e-grid-column>
+                     </e-grid-columns>
+               </ejs-grid>
+       
+             </div>    
+        </div>
 
-                </div>
-                <div class="col-md-6">
-                    <!-- Right Column Content (Bar Chart or Other Content) -->
-                </div>
+        <div class="col-md-6">
+            <!-- Right Column Content (Bar Chart or Other Content) -->
+            <div>
+                <ejs-chart id="topusers"></ejs-chart>
             </div>
+        </div>
     </div>
 
 
+</div>
+
+<script>
+    var startDate;
+    var endDate;
+    var customFilter;
+
+    function onFilterCreate(args) {
+        var flValInput = new ej.base.createElement('input', { className: 'flm-input' });
+        args.target.appendChild(flValInput);
+        var grid = document.getElementById("Grid").ej2_instances[0];
+        var date = [];
+        grid.filterSettings.columns.forEach(col => {
+            if (col.field === "Date")
+                date.push(col.value);
+        });
+        var dateRangeInst = new ej.calendars.DateRangePicker({
+            startDate: date[0],
+            endDate: date[1],
+            change: function (e) {
+                if (e != undefined && e.value) {
+                    var grid = document.getElementById("Grid").ej2_instances[0];
+                    startDate = e.value[0];
+                    endDate = e.value[1];
+                    customFilter = true;
+                    grid.filterByColumn('Date', 'greaterthan', startDate);
+                }
+
+            }
+        });
+        dateRangeInst.appendTo(flValInput);
+    }
+
+    function onFilterWrite(args) {
+    }
+
+    function onActionBegin(args) {
+        if (args.requestType === "filtering" && args.currentFilteringColumn === "Date" && customFilter) {
+            customFilter = false;
+            args.columns.push({ actualFilterValue: {}, actualOperator: {}, field: "Date", ignoreAccent: false, isForeignKey: false, matchCase: false, operator: "lessthan", predicate: "and", uid: this.getColumnByField(args.currentFilteringColumn).uid, value: endDate });
+        }
+    }
+
+</script>

@@ -13,7 +13,13 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<TimeLoggerDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddScoped<DbInitializer>();
+
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NHaF1cWWhIfEx1RHxQdld5ZFRHallYTnNWUj0eQnxTdEZiWH1acH1VQGRdUUJyXQ==");
+
 var app = builder.Build();
+
+//Register Syncfusion license
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -32,7 +38,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=TimeLogs}/{action=Index}/{id?}");
 
 // Seed the database
 using (var scope = app.Services.CreateScope())
