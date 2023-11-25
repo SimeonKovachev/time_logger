@@ -8,29 +8,25 @@ Time Logger is a web-based application designed for tracking and managing time l
 The primary goal of this application is to provide an efficient and user-friendly platform for tracking time spent on different projects by various users. It facilitates the creation, management, and visualization of time logs.
 
 ## Visualization of the Project
-UI
+### UI
 ![image](https://github.com/SimeonKovachev/time_logger/assets/118481673/fcf1e251-b01e-4abc-a055-f821fa33cc98)
 
-Sorting and Pagination
+### Sorting and Pagination
 ![image](https://github.com/SimeonKovachev/time_logger/assets/118481673/3dc6533b-6b0e-43dc-b57c-44c8ce2fb2fd)
 
-Filtering
+### Filtering
 ![image](https://github.com/SimeonKovachev/time_logger/assets/118481673/b50cb9cb-a861-45f3-a183-f6c4eed54631)
 ![image](https://github.com/SimeonKovachev/time_logger/assets/118481673/410d3bb6-ebf0-4b45-8671-a53d3a35baad)
 
 
-Calling Database Initializer
+### Calling Database Initializer
 ![image](https://github.com/SimeonKovachev/time_logger/assets/118481673/b571db23-dd52-40ec-b2c6-2677ed00d223)
 
 
-Visualization of top 10 users and projects 
+### Visualization of top 10 users and projects 
 ![image](https://github.com/SimeonKovachev/time_logger/assets/118481673/c136a58c-4077-49ec-9042-f2d7d10dfacf)
 ![image](https://github.com/SimeonKovachev/time_logger/assets/118481673/ebe06e4d-3acd-4f8d-b083-bfc447616301)
 ![image](https://github.com/SimeonKovachev/time_logger/assets/118481673/6d66038b-cc82-4bf9-a98d-df01a8a934a5)
-
-
-
-
 
 
 
