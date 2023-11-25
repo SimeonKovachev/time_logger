@@ -48,7 +48,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    margin: 0px; /* Add margin around each column for spacing */
+    margin: 0px;
 }
 
     .control-section:hover {
@@ -85,8 +85,6 @@ body {
     font-weight: 600;
     text-transform: uppercase;
 }
-
-/* Rest of the grid styles remain the same as previously defined */
 
 
 /* Base Grid styles */
