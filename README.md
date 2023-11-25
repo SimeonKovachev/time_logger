@@ -60,6 +60,7 @@ The primary goal of this application is to provide an efficient and user-friendl
 3. Run dotnet restore to install dependencies.
 4. Run dotnet run to start the application.
 5. Access the application at http://localhost:[port].
+6. Keep in mind that time_logger_ui is the uncompleted angular attempt.
 
 
 ## Conclusion
