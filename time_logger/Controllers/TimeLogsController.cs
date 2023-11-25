@@ -38,10 +38,49 @@ namespace time_logger.Controllers
                     Date = t.Date,
                     TimeWorked = t.HoursWorked
                 }).ToListAsync();
-            ViewBag.datasource = timeLogs;
+
+            // Top 10 Users
+            var topUsers = await _context.TimeLogs
+                .GroupBy(t => t.User)
+                .Select(g => new ChartData
+                {
+                    Name = g.Key.FirstName + " " + g.Key.LastName,
+                    TotalHours = g.Sum(t => t.HoursWorked)
+                })
+                .OrderByDescending(t => t.TotalHours)
+                .Take(10)
+                .ToListAsync();
+
+            // Top 10 Projects
+            var topProjects = await _context.TimeLogs
+                .GroupBy(t => t.Project)
+                .Select(g => new ChartData
+                {
+                    Name = g.Key.ProjectName,
+                    TotalHours = g.Sum(t => t.HoursWorked)
+                })
+                .OrderByDescending(t => t.TotalHours)
+                .Take(10)
+                .ToListAsync();
+
+            ViewBag.UserDataSource = topUsers;
+            ViewBag.ProjectDataSource = topProjects;
+
+
             return View(timeLogs);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetUserComparisonData(int userId)
+        {
+            var userTotalHours = await _context.TimeLogs
+       .Where(t => t.UserId == userId)
+       .SumAsync(t => t.HoursWorked);
+
+            return Json(new { TotalHours = userTotalHours });
+        }
+
+        //Logic for the DatabaseInitializer button
         [HttpPost]
         public async Task<IActionResult> InitializeDatabase()
         {
@@ -55,6 +94,14 @@ namespace time_logger.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
+     
+        public class ChartData
+        {
+            public string Name { get; set; }
+            public double TotalHours { get; set; }
+        }
+
 
 
 

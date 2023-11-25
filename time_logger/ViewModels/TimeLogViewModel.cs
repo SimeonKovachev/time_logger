@@ -8,4 +8,15 @@
         public DateTime Date { get; set; }
         public float TimeWorked { get; set; }
     }
+
+    public class TopUserOrProjectViewModel
+    {
+        public string Name { get; set; }
+        public float TotalHours { get; set; }
+    }
+    public class UserComparisonViewModel
+    {
+        public DateTime Date { get; set; }
+        public float HoursWorked { get; set; }
+    }
 }

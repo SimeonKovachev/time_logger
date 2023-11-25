@@ -7,41 +7,66 @@
 }
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-6">
+    <div class="row gy-4">
+        <div class="col-12 col-md-6 d-flex flex-column px-3">
 
             <!-- Left Column Content (User's Time Logs) -->
-             <div class="control-section" style="overflow-x:auto; margin-left: 4px;">
+             <div class="control-section flex-grow-1" style="overflow-x:auto;">
                  <div class="col-md-12 d-flex justify-content-between mb-5">
                     <h3 class="h3"> User Time Logs Table</h3>
                     <button id="initDbButton" class="btn btn-primary">Reset Data</button>
                  </div>
                  
-                <ejs-grid id="Grid" dataSource="@Model" allowSorting="true" allowFiltering="true"  allowPaging="true" autoFit="true">
+                <ejs-grid id="Grid" dataSource="@Model" allowSorting="true" allowFiltering="true" allowPaging="true" width="100%" autoFit="true">
                      <e-grid-pagesettings pageSize="10"></e-grid-pagesettings>
                     <e-grid-filterSettings type="Menu" operators="@(new { dateOperator = operators })"></e-grid-filterSettings>
                      <e-grid-columns>
-                        <e-grid-column field="UserName" headerText="Name" width="120" allowFiltering="false"></e-grid-column>
-                        <e-grid-column field="Email" headerText="Email" allowResizing="false" width="200" allowFiltering="false"></e-grid-column>
-                        <e-grid-column field="ProjectName" headerText=" Project" width="80" allowFiltering="false"></e-grid-column>
-                        <e-grid-column field="Date" headerText="Date" filter="@(new { ui= new { create = "onFilterCreate", write = "onFilterWrite" } })" format="yMd" width="100" type="Date"></e-grid-column>
-                        <e-grid-column field="TimeWorked" headerText="Time Worked" format="N2" width="115" allowFiltering="false"></e-grid-column>
+                        <e-grid-column field="UserName" headerText="Name" allowFiltering="false"></e-grid-column>
+                        <e-grid-column field="Email" headerText="Email" width="180" allowResizing="false"  allowFiltering="false"></e-grid-column>
+                        <e-grid-column field="ProjectName" headerText=" Project" allowFiltering="false"></e-grid-column>
+                        <e-grid-column field="Date" headerText="Date" filter="@(new { ui= new { create = "onFilterCreate", write = "onFilterWrite" } })" format="yMd" type="Date"></e-grid-column>
+                        <e-grid-column field="TimeWorked" headerText="Time Worked" format="N2" allowFiltering="false"></e-grid-column>
+                        <e-grid-column headerText="Compare" template="#compateTemplate" allowFiltering="false"></e-grid-column>
                      </e-grid-columns>
                </ejs-grid>
        
              </div>    
         </div>
 
-        <div class="col-md-6">
-            <!-- Right Column Content (Bar Chart or Other Content) -->
-            <div>
-                <ejs-chart id="topusers"></ejs-chart>
+        <div class="col-12 col-md-6 d-flex flex-column px-3">
+
+            <!-- Right Column Content (Bar Chart) -->
+            <div class="control-section flex-grow-1">
+                <div class="col-md-12 d-flex justify-content-between mb-5">
+                    <h3 class="h3">Top 10 Chart</h3>
+                </div>
+
+                <ejs-chart id="barChart">
+                    <e-chart-primaryxaxis valueType="Category">
+                        <e-majorgridlines width="0"></e-majorgridlines>
+                        <e-majorticklines width="0"></e-majorticklines>
+                    </e-chart-primaryxaxis>
+                    <e-chart-primaryyaxis>
+                        <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
+                        <e-majorticklines width="0"></e-majorticklines>
+                    </e-chart-primaryyaxis>
+                    <e-chart-chartarea> 
+                        <e-chartarea-border width="0"></e-chartarea-border>
+                    </e-chart-chartarea>
+                    <e-chart-tooltipsettings enable="true" shared="true">
+                    </e-chart-tooltipsettings>
+                    <e-series-collection>
+                        <e-series dataSource="@ViewBag.ProjectDataSource" xName="Name" yName="TotalHours" Name="Project Hours" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Column" fill="#4CAF50"></e-series>
+                        <e-series dataSource="@ViewBag.UserDataSource" xName="Name" yName="TotalHours" Name="User Hours" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Column" fill="#2196F3"    ></e-series>
+                    </e-series-collection>
+                </ejs-chart>
             </div>
         </div>
     </div>
 
 
 </div>
+
 
 <script>
     var startDate;
@@ -85,3 +110,11 @@
     }
 
 </script>
+
+<script id="compateTemplate" type="text/x-template">
+    <div class="d-flex flex-row justify-content-start">
+       <button class="btn btn-sm btn-primary" onclick="compareUser(${userId})">🔀</button>
+    </div>
+</script>
+
+

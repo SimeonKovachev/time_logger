@@ -1,20 +1,20 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
@@ -22,121 +22,118 @@ body {
     font-family: 'Roboto', sans-serif !important;
 }
 
-
-/* Add this to your style.css file */
-
-/* General Table Styling */
-.table {
-    color: #333;
-    border-collapse: separate;
-    border-spacing: 0 0.5em;
-    font-family: 'Roboto', sans-serif !important;
-}
-
-    /* Header Styling */
-    .table thead th {
-        background-color: #EEE;
-        font-weight: bold;
-    }
-
-    /* Body Styling */
-    .table tbody tr {
-        background-color: #FFF;
-        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
-    }
-
-    .table th, .table td {
-        padding: 0.3rem; /* Reduced from 0.75rem */
-        font-size: 0.9rem; /* Reduced from default */
-        white-space: normal;
-        word-wrap: break-word;
-    }
-
-@media (max-width: 768px) {
-    .table th, .table td {
-        font-size: 0.8rem;
-    }
-}
-
-.table-responsive {
-    overflow-x: auto;
-    min-height: 0.01%;
+.navbar-brand-centered {
+    position: absolute;
+    left: 50%;
     display: block;
+    width: 160px;
+    text-align: center;
+    background-color: transparent;
 }
-
-@media screen and (max-width: 767px) {
-    .table-responsive {
-        width: 100%;
-        margin-bottom: 15px;
-        overflow-y: hidden;
-        -ms-overflow-style: -ms-autohiding-scrollbar;
-        border: 1px solid #ddd;
-    }
-
-/* Card Styling */
-.card {
-    border: none;
-    border-radius: 0.5em;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.card-header {
-    background-color: #6f42c1;
-    color: black;
-    border-bottom: 0;
-    padding: 1em 1.25em;
-    font-size: 1.2em;
-    border-top-left-radius: 0.5em;
-    border-top-right-radius: 0.5em;
-}
-
-/* Responsive Container */
+/* Main container with a subtle gradient for added depth */
 .container-fluid {
-    padding: 2em;
+    background: linear-gradient(to right bottom, #eef2f7, #f4f7fa);
+    padding: 20px; /* Padding around the entire container */
 }
 
-/* Button Styling */
-.button {
-    background-color: #6f42c1;
-    color: white;
-    border: none;
-    padding: 0.5em 1em;
-    border-radius: 0.25em;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+/* Rows and columns with shadow and transitions for interactive feel */
+.row {
+   margin: 20px;
 }
 
-    .button:hover {
-        background-color: #5a34a3;
-    }
-
-
-.gradient-background {
-    background: linear-gradient(135deg, #9575cd 0%, #7e57c2 100%);
-    color: white;
-}
-
-/* Soft drop shadows for a subtle depth effect */
-.soft-shadow {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Rounded corners for a modern feel */
-.rounded-corners {
+/* Control-section with a bolder shadow for focus */
+.control-section {
+    padding: 15px;
+    background-color: #ffffff;
     border-radius: 8px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    margin: 0px; /* Add margin around each column for spacing */
 }
 
-/* Interactive elements like buttons with a hover effect */
-.interactive-element {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-    .interactive-element:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    .control-section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
     }
 
-/* For text and icons, consider a subtle text-shadow for a glowing effect */
-.text-glow {
-    text-shadow: 0 0 5px rgba(150, 150, 250, 0.5);
+    /* Header styling with an accent color */
+    .control-section h3 {
+        color: #017afd; /* Blue accent color */
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+/* Primary button styling with gradient and hover effects */
+.btn-primary {
+    background-image: linear-gradient(to right, #06b, #03f);
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    padding: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-image 0.3s ease-in-out;
 }
+
+    .btn-primary:hover {
+        background-image: linear-gradient(to left, #059, #036);
+    }
+
+/* Enhance the look of the grid */
+.e-grid .e-headercell {
+    background-color: #f0f0f0;
+    color: #017afd; /* Blue accent color for headers */
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Rest of the grid styles remain the same as previously defined */
+
+
+/* Base Grid styles */
+.e-grid {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-size: 14px !important;
+    color: #424242 !important; /* Dark grey text for better readability */
+    border: none !important; /* Remove any borders */
+}
+
+    /* Grid Header styles */
+    .e-grid .e-headercell {
+        background-color: #f8f9fa !important; /* Light grey background */
+        color: #333 !important; /* Dark text for header */
+        font-weight: 600; /* Slightly bolder font for headers */
+        border-bottom: 1px solid #e0e0e0; /* Subtle separation between header and rows */
+    }
+
+    /* Grid Row styles for hover */
+    .e-grid .e-row:hover {
+        background-color: #f2f2f2; /* Light grey background on row hover */
+    }
+
+    /* Grid Row selection background */
+    .e-grid .e-selectionbackground {
+        background-color: #e1f5fe; /* Light blue for selected row background */
+    }
+
+    /* Grid Alternate Row styles */
+    .e-grid .e-row.e-altrow {
+        background-color: #ffffff; /* White background for alternate rows */
+    }
+
+    /* Grid Row styles */
+    .e-grid .e-row {
+        background-color: #f7f7f7; /* Very light grey background for rows */
+    }
+
+    /* Paging and other interactive elements */
+    .e-grid .e-pagercontainer {
+        background-color: #ffffff; /* White background for pager */
+        color: #424242; /* Dark grey text */
+    }
+
+    /* If your grid has a toolbar, style it too */
+    .e-grid .e-toolbar {
+        background-color: #f8f9fa; /* Light grey background */
+        color: #333; /* Dark grey text */
+        border-bottom: 1px solid #e0e0e0; /* Line to separate from the grid */
+    }
